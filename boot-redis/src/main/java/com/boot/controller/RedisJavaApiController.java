@@ -1,0 +1,67 @@
+package com.boot.controller;
+
+import com.boot.model.User;
+import com.boot.service.RedisService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * 测试redis CRUD
+ * Created by yezhiqin on 2018/6/25.
+ */
+
+@RestController
+public class RedisJavaApiController {
+
+    @Resource
+    private RedisService redisService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 测试存取字符串
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public String add() {
+        redisService.set("name","zhangsan");
+        String name = (String) redisService.get("name");
+        return name;
+    }
+
+
+    /**
+     * 测试存取字符串(自带模版)
+     * @return
+     */
+    @RequestMapping("/templateAdd")
+    @ResponseBody
+    public String redisTemplateAdd() {
+        redisTemplate.opsForValue().set("name","lisi");
+        String name = (String) redisTemplate.opsForValue().get("name");
+        return name;
+    }
+
+
+
+    /**
+     * 测试存对象
+     * @return
+     */
+    @RequestMapping("/addUser")
+    @ResponseBody
+    public String addUser(){
+        User user = new User("zhangsanfeng@126.com", "smile", "youknow", "know","2020");
+        redisService.setSerializableObject("user",user);
+        User newUser = (User) redisService.get("user");
+        return "从redis缓存取到的姓名"+newUser.getUserName()+"邮箱："+newUser.getEmail();
+    }
+
+}

@@ -1,0 +1,30 @@
+package com.boot.service;
+
+import com.boot.model.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+/**
+ * 学生类接口
+ * Created by zhoujh on 2018/6/14.
+ */
+public interface StudentService extends JpaRepository<Student, Long> {
+
+    //根据学生姓名查询
+    Student findByname(String name);
+
+
+    //根据学生姓名和地址查询
+    Student findByNameOrAddress(String name, String address);
+
+    //自定义sql查询
+    @Query("select s from Student s where s.name = ?1")
+    Student zdyFindByname(String name);
+
+
+    @Query("select s from Student s")
+    Page<Student> findALL(Pageable pageable);
+    Page<Student> findByName(String name, Pageable pageable);
+}

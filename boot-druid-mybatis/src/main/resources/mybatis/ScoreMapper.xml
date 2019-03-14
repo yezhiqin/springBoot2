@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.boot.mapper.one.ScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.boot.model.Score" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="chinese_score" property="chineseScore" jdbcType="DOUBLE" />
+    <result column="english_score" property="englishScore" jdbcType="DOUBLE" />
+    <result column="math_score" property="mathScore" jdbcType="DOUBLE" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, chinese_score, english_score, math_score, sid
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from score
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from score
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.boot.model.Score" >
+    insert into score (id, chinese_score, english_score, 
+      math_score, sid)
+    values (#{id,jdbcType=VARCHAR}, #{chineseScore,jdbcType=DOUBLE}, #{englishScore,jdbcType=DOUBLE}, 
+      #{mathScore,jdbcType=DOUBLE}, #{sid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.boot.model.Score" >
+    insert into score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="chineseScore != null" >
+        chinese_score,
+      </if>
+      <if test="englishScore != null" >
+        english_score,
+      </if>
+      <if test="mathScore != null" >
+        math_score,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseScore != null" >
+        #{chineseScore,jdbcType=DOUBLE},
+      </if>
+      <if test="englishScore != null" >
+        #{englishScore,jdbcType=DOUBLE},
+      </if>
+      <if test="mathScore != null" >
+        #{mathScore,jdbcType=DOUBLE},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update score
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chineseScore != null" >
+        chinese_score = #{record.chineseScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.englishScore != null" >
+        english_score = #{record.englishScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.mathScore != null" >
+        math_score = #{record.mathScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sid != null" >
+        sid = #{record.sid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update score
+    set id = #{record.id,jdbcType=VARCHAR},
+      chinese_score = #{record.chineseScore,jdbcType=DOUBLE},
+      english_score = #{record.englishScore,jdbcType=DOUBLE},
+      math_score = #{record.mathScore,jdbcType=DOUBLE},
+      sid = #{record.sid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.boot.model.Score" >
+    update score
+    <set >
+      <if test="chineseScore != null" >
+        chinese_score = #{chineseScore,jdbcType=DOUBLE},
+      </if>
+      <if test="englishScore != null" >
+        english_score = #{englishScore,jdbcType=DOUBLE},
+      </if>
+      <if test="mathScore != null" >
+        math_score = #{mathScore,jdbcType=DOUBLE},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.boot.model.Score" >
+    update score
+    set chinese_score = #{chineseScore,jdbcType=DOUBLE},
+      english_score = #{englishScore,jdbcType=DOUBLE},
+      math_score = #{mathScore,jdbcType=DOUBLE},
+      sid = #{sid,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getListScore" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from score
+    where 1=1
+    order by id desc
+  </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+package com.boot.service;
+
+import com.boot.model.Score;
+import com.boot.model.StudentInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 学生成绩接口
+ * Created by yezhiqin on 2018/6/14.
+ */
+
+public interface StudentScoreService extends JpaRepository<Score, Long>  {
+
+    @Query("select stu.name as name, stu.age as age, sc.chineseScore as chineseScore , sc.mathScore as mathScore,sc.englishScore as englishScore from Student stu , Score sc " +
+            "where stu.id = sc.sid  and  stu.name = ?1 ")
+    //List<StudentInfo> findStudentInfo(String name);
+
+    Map<String,Object> findStudentInfo(String name);
+}
